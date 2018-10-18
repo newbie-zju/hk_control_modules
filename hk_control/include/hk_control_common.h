@@ -17,8 +17,7 @@
 /**************************************/
 /*      opencv/eigen head  file       */
 /**************************************/
-//
-#include <opencv2/opencv.hpp>
+// #include <opencv2/opencv.hpp>
 
 /**************************************/
 /*             Macro define           */
