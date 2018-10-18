@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<launch>
+    <node pkg="hk_control" name="hk_control" type="hk_control_node" output="screen">
+	  <!-- mode-->
+	  <param name="sub_box_topic" type="string" value="/track_box" />
+	  
+	  <!--hk-->
+	  <param name="ip" type="string" value="192.168.0.200" />
+	  <param name="username" type="string" value="admin" />
+	  <param name="passwd" type="string" value="zjucsc301" />
+	  
+	  <!-- PID-->
+	  <param name="P" type="double" value="0.7"/>
+	  <param name="I" type="double" value="0"/>
+	  <param name="D" type="double" value="0"/>
+	  
+	  <param name="keep_static_threshold" type="double" value="0.08"/>
+	  <param name="joy_sensitivity" type="double" value="0.2"/>
+	  
+	  <param name="time_threshold" type="double" value="10"/>
+	  
+  </node>
+    <node pkg="joy" type="joy_node" name="joy_node">
+  </node>
+</launch>
