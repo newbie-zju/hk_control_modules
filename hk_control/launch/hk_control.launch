@@ -5,12 +5,12 @@
 	  <param name="sub_box_topic" type="string" value="/track_box" />
 	  
 	  <!--hk-->
-	  <param name="ip" type="string" value="192.168.0.200" />
+	  <param name="ip" type="string" value="192.168.1.200" />
 	  <param name="username" type="string" value="admin" />
 	  <param name="passwd" type="string" value="zjucsc301" />
 	  
 	  <!-- PID-->
-	  <param name="P" type="double" value="0.7"/>
+	  <param name="P" type="double" value="1.4"/>
 	  <param name="I" type="double" value="0"/>
 	  <param name="D" type="double" value="0"/>
 	  
