@@ -5,6 +5,7 @@ float P, I, D;
 float keep_static_threshold, joy_sensitivity;
 int time_threshold;
 std::string sub_box_topic;
+ros::Publisher pub_data;
 
 hk_control::Hk_Control my_hk_control;
 
@@ -31,6 +32,8 @@ void joyCallback(const sensor_msgs::JoyConstPtr &joy_msg)
 	}
 	my_hk_control.ax = joy_msg->axes[0];
 	my_hk_control.ay = joy_msg->axes[1];
+	if (joy_msg->buttons[2])
+	    my_hk_control.az = 1;
 }
 
 int main(int argc, char **argv)
@@ -38,10 +41,12 @@ int main(int argc, char **argv)
 	ros::init(argc, argv, "svm_train_node");
 	ros::NodeHandle nh;
 	ros::NodeHandle nh_param("~");
+
 	get_ros_param(nh_param);
-	
+
 	ros::Subscriber sub_bbox = nh.subscribe(sub_box_topic, 10, boxCallback);
 	ros::Subscriber sub_joy = nh.subscribe("/joy", 10, joyCallback);
+	pub_data = nh.advertise<pdt_msgs::hk>("/hk/data",1000);
 	ros::Rate loop_rate(50);
   
 	while (ros::ok())
@@ -49,7 +54,11 @@ int main(int argc, char **argv)
 		if (my_hk_control.a_manul && !my_hk_control.b_auto)
 		{
 			my_hk_control.hk_control_manual();
-// 			std::cout << "manul mode" << std::endl;
+			my_hk_control.mannul_to_auto = true;
+		}
+		else
+		{
+		    my_hk_control.hk_control_auto();
 		}
 		ros::spinOnce();
 		loop_rate.sleep();
@@ -58,7 +67,9 @@ int main(int argc, char **argv)
 }
 
 void get_ros_param(ros::NodeHandle &nh_param)
-{
+{	
+        std::string output_file,img_path;
+	int temprate_detect, sleep_time, sleep_time_detect, set_nav_position_sum;
 	if(!nh_param.getParam("sub_box_topic", sub_box_topic))  
 		sub_box_topic = "/pedstrian_bboxes";
 	
@@ -66,14 +77,52 @@ void get_ros_param(ros::NodeHandle &nh_param)
 	if(!nh_param.getParam("I", I))  I = 0;	
 	if(!nh_param.getParam("D", D))  D = 0;
 	
-	if(!nh_param.getParam("ip", my_hk_control.ip))  my_hk_control.ip = "192.0.0.64";
+	if(!nh_param.getParam("ip", my_hk_control.ip))  my_hk_control.ip = "192.168.0.200";
 	if(!nh_param.getParam("username", my_hk_control.username))  my_hk_control.username = "admin";	
 	if(!nh_param.getParam("passwd", my_hk_control.passwd))  my_hk_control.passwd = "12345";
 	
 	if(!nh_param.getParam("keep_static_threshold", keep_static_threshold)) keep_static_threshold = 0;
 	if(!nh_param.getParam("joy_sensitivity", joy_sensitivity)) joy_sensitivity = 0;
 	if(!nh_param.getParam("time_threshold", time_threshold)) time_threshold = 10;
-	std::string pkg_path = ros::package::getPath("hk_control");
+	if(!nh_param.getParam("output_file", output_file)) output_file = "/config/logs/result.txt";
+	if(!nh_param.getParam("img_path", img_path)) img_path = "/config/warning.jpg";
+	if(!nh_param.getParam("temprate_detect", temprate_detect)) temprate_detect = 0;
+	if(!nh_param.getParam("sleep_time", sleep_time)) sleep_time = 10;
+	if(!nh_param.getParam("sleep_time_detect", sleep_time_detect)) sleep_time_detect = 10;
+	if(!nh_param.getParam("set_nav_position_sum", set_nav_position_sum)) set_nav_position_sum = 10;
 	
+	std::string pkg_path = ros::package::getPath("hk_control");
+	output_file = pkg_path + output_file;
+	img_path = pkg_path + img_path;
+	my_hk_control.output_file = output_file;
+	my_hk_control.img_path = img_path;
+	my_hk_control.temprate_detect = temprate_detect;
+	my_hk_control.sleep_time = sleep_time;
+	my_hk_control.sleep_time_detect = sleep_time_detect;
+	my_hk_control.set_nav_position_sum = set_nav_position_sum;
 	my_hk_control.hk_init();
 }
+
+BOOL CALLBACK MessageCallback(LONG lCommand, NET_DVR_ALARMER *pAlarmer, char *pAlarmInfo, DWORD dwBufLen, void* pUser)
+{
+    switch(lCommand)
+    {
+        case COMM_THERMOMETRY_ALARM:
+        {
+            NET_DVR_THERMOMETRY_ALARM struThermometryAlarm = {0};
+            memcpy(&struThermometryAlarm, pAlarmInfo, sizeof(NET_DVR_THERMOMETRY_ALARM));
+            if (0 == struThermometryAlarm.byRuleCalibType)
+            {
+                hk_control::TemperatureInfo ti_tmp(struThermometryAlarm.wPresetNo, struThermometryAlarm.byRuleID, struThermometryAlarm.fCurrTemperature);
+                my_hk_control.hk_write_temperature(ti_tmp);
+            }
+        }
+            break;
+        default:
+            std::cout << "error" << std::endl;
+            break;
+    }
+
+    return TRUE;
+}
+
