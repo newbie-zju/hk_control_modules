@@ -82,7 +82,10 @@ void MainWindow::slot_data(const pdt_msgs::hkConstPtr &hk_msg)
       else
       {
 	  warning_img = cv::imread(abnormal_path);
-	  
+	  cv::putText(warning_img, hk_msg->data_time, cv::Point(50,60), cv::FONT_HERSHEY_DUPLEX, 0.5, cv::Scalar(255, 255, 255), 2);
+	  cv::putText(warning_img, hk_msg->pre_position, cv::Point(80,60), cv::FONT_HERSHEY_DUPLEX, 0.5, cv::Scalar(255, 255, 255), 2);
+	  cv::putText(warning_img, hk_msg->ID, cv::Point(110,60), cv::FONT_HERSHEY_DUPLEX, 0.5, cv::Scalar(255, 255, 255), 2);
+	  cv::putText(warning_img, hk_msg->temperature, cv::Point(140,60), cv::FONT_HERSHEY_DUPLEX, 0.5, cv::Scalar(255, 255, 255), 2);
       }
       cv::cvtColor(warning_img, warning_img, CV_BGR2RGB);
       m_qImg = QImage((const unsigned char*)(warning_img.data), warning_img.cols, warning_img.rows, QImage::Format_RGB888);
