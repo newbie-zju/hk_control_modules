@@ -8,7 +8,7 @@
 #include <string>
 
 MainWindow::MainWindow(int argc, char **argv, QWidget *parent) :
-    QMainWindow(parent),
+    QMainWindow(parent), warning_threshold(20),
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
@@ -50,6 +50,11 @@ MainWindow::~MainWindow()
 }
 
 void MainWindow::on_pushButton_clicked()
+{
+    close();
+}
+
+void MainWindow::on_pushButton1_clicked()
 {
     close();
 }

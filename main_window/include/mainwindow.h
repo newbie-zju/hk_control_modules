@@ -17,8 +17,6 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <ros/package.h>
 
-#define warning_threshold 20
-
 namespace Ui {
 class MainWindow;
 }
@@ -33,6 +31,7 @@ public:
 
 private slots:
     void on_pushButton_clicked();
+    void on_pushButton1_clicked();
     void slot_img(const ImageMsgVal &img_msg);
     void slot_data(const RecfgMsgVal &hk_msg);
 
@@ -42,4 +41,5 @@ private:
     RosThread *m_rosthread;
     cv::Mat warning_img, src_img;
     std::string normal_path, abnormal_path;
+    float warning_threshold;
 };
