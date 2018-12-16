@@ -78,42 +78,42 @@ void MainWindow::slot_img(const ImageMsgVal &img_msg)
 
 void MainWindow::slot_data(const RecfgMsgVal &hk_msg)
 {
-      ui->label_7->setText(QString::fromStdString(hk_msg->data_time));
-      ui->label_8->setText(QString::fromStdString(hk_msg->pre_position));
-      ui->label_9->setText(QString::fromStdString(hk_msg->ID));
-      ui->label_10->setText(QString::fromStdString(hk_msg->temperature));
-      float temper_tmp;
-      std::istringstream is(hk_msg->temperature);
-      is >> temper_tmp;
+    ui->label_7->setText(QString::fromStdString(hk_msg->data_time));
+    ui->label_8->setText(QString::fromStdString(hk_msg->pre_position));
+    ui->label_9->setText(QString::fromStdString(hk_msg->ID));
+    ui->label_10->setText(QString::fromStdString(hk_msg->temperature));
+    float temper_tmp;
+    std::istringstream is(hk_msg->temperature);
+    is >> temper_tmp;
 
-      if (warning_threshold == 0)
-      {
-	  printf("warning_threshold is 0, set it to Windows default\n");
-	  warning_threshold = 20;
-      }
-      if (temper_tmp < warning_threshold)
-      {
-          warning_img = cv::imread(normal_path);
-	  cv::resize(warning_img, warning_img, cv::Size(640, 360));
-	  cv::cvtColor(warning_img, warning_img, CV_BGR2GRAY);
-	  m_qImg = QImage((const unsigned char*)(warning_img.data), warning_img.cols, warning_img.rows, QImage::Format_Indexed8);
-	  ui->label_11->setPixmap(QPixmap::fromImage(m_qImg));
-      }
-      else
-      {
-	  warning_img = cv::imread(abnormal_path);
-	  cv::resize(warning_img, warning_img, cv::Size(640, 360));
-	  cv::imshow("ui", warning_img);
-	  cv::waitKey(1);
-	  cv::putText(warning_img, hk_msg->data_time, cv::Point(260,75), cv::FONT_HERSHEY_DUPLEX, 1, cv::Scalar(0, 0, 255), 2);
-	  cv::putText(warning_img, hk_msg->pre_position, cv::Point(280,122), cv::FONT_HERSHEY_DUPLEX, 1, cv::Scalar(0, 0, 255), 2);
-	  cv::putText(warning_img, hk_msg->ID, cv::Point(235,175), cv::FONT_HERSHEY_DUPLEX, 1, cv::Scalar(0, 0, 255), 2);
-	  cv::putText(warning_img, hk_msg->temperature, cv::Point(260,220), cv::FONT_HERSHEY_DUPLEX, 1, cv::Scalar(0, 0, 255), 2);
-	  
-	  cv::cvtColor(warning_img, warning_img, CV_BGR2RGB);
-	  m_qImg = QImage((const unsigned char*)(warning_img.data), warning_img.cols, warning_img.rows, QImage::Format_RGB888);
-	  ui->label_11->setPixmap(QPixmap::fromImage(m_qImg));
-      }
+    if (warning_threshold == 0)
+    {
+	printf("warning_threshold is 0, set it to Windows default\n");
+	warning_threshold = 20;
+    }
+    if (temper_tmp < warning_threshold)
+    {
+	warning_img = cv::imread(normal_path);
+	cv::resize(warning_img, warning_img, cv::Size(640, 360));
+	cv::cvtColor(warning_img, warning_img, CV_BGR2GRAY);
+	m_qImg = QImage((const unsigned char*)(warning_img.data), warning_img.cols, warning_img.rows, QImage::Format_Indexed8);
+	ui->label_11->setPixmap(QPixmap::fromImage(m_qImg));
+    }
+    else
+    {
+	warning_img = cv::imread(abnormal_path);
+	cv::resize(warning_img, warning_img, cv::Size(640, 360));
+// 	cv::imshow("ui", warning_img);
+// 	cv::waitKey(1);
+	cv::putText(warning_img, hk_msg->data_time, cv::Point(260,75), cv::FONT_HERSHEY_DUPLEX, 1, cv::Scalar(0, 0, 255), 2);
+	cv::putText(warning_img, hk_msg->pre_position, cv::Point(280,122), cv::FONT_HERSHEY_DUPLEX, 1, cv::Scalar(0, 0, 255), 2);
+	cv::putText(warning_img, hk_msg->ID, cv::Point(235,175), cv::FONT_HERSHEY_DUPLEX, 1, cv::Scalar(0, 0, 255), 2);
+	cv::putText(warning_img, hk_msg->temperature, cv::Point(260,220), cv::FONT_HERSHEY_DUPLEX, 1, cv::Scalar(0, 0, 255), 2);
+	
+	cv::cvtColor(warning_img, warning_img, CV_BGR2RGB);
+	m_qImg = QImage((const unsigned char*)(warning_img.data), warning_img.cols, warning_img.rows, QImage::Format_RGB888);
+	ui->label_11->setPixmap(QPixmap::fromImage(m_qImg));
+    }
 }
 
 
