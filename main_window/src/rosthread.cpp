@@ -4,8 +4,8 @@
 RosThread::RosThread(QObject *parent)
     : QObject(parent)
 {
-    qRegisterMetaType<int>("int");
-
+    qRegisterMetaType<RecfgMsgVal>("RecfgMsgVal");
+    qRegisterMetaType<ImageMsgVal>("ImageMsgVal");
     m_isExt = false; m_ros_thread = NULL;
     n_ = new ros::NodeHandle;
     m_ros_thread = new boost::thread(boost::bind(&RosThread::rosrunThread, this));
@@ -27,7 +27,7 @@ RosThread::~RosThread()
 void RosThread::rosrunThread()
 {
     ros::Subscriber sub_data =  n_->subscribe("/hk/data", 10, &RosThread::dataCallback, this);
-    ros::Subscriber sub_img =  n_->subscribe("/hk/image", 10, &RosThread::imgCallback, this);
+    ros::Subscriber sub_img =  n_->subscribe("/hk_temperature_video", 10, &RosThread::imgCallback, this);
     ros::Duration initDur(0.2);
     
     while (ros::ok() && !m_isExt)
@@ -38,12 +38,12 @@ void RosThread::rosrunThread()
     ROS_INFO("ros thread closing...");
 }
 
-void RosThread::imgCallback(const sensor_msgs::ImageConstPtr &img_msg)
-{
+void RosThread::imgCallback(const sensor_msgs::Image::ConstPtr &img_msg)
+{   
     emit signal_img_msg(img_msg);
 }
 
-void RosThread::dataCallback(const pdt_msgs::hkConstPtr &hk_msg)
+void RosThread::dataCallback(const pdt_msgs::hk::ConstPtr &hk_msg)
 {
     emit signal_data_msg(hk_msg);
 }

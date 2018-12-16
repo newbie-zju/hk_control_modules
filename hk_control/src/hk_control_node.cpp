@@ -36,6 +36,21 @@ void joyCallback(const sensor_msgs::JoyConstPtr &joy_msg)
 	    my_hk_control.az = 1;
 }
 
+void imageCb(const sensor_msgs::ImageConstPtr &msg) 
+{
+    cv::Mat img_tmp;
+    cv_bridge::CvImagePtr cv_ptr;
+    try {
+        cv_ptr = cv_bridge::toCvCopy(msg, sensor_msgs::image_encodings::BGR8);
+    }
+    catch (cv_bridge::Exception &e) {
+        ROS_ERROR("cv_bridge exception: %s", e.what());
+        return;
+    }
+    cv_ptr->image.copyTo(img_tmp);
+    my_hk_control.src_img = img_tmp.clone();
+}
+
 int main(int argc, char **argv)
 {
 	ros::init(argc, argv, "svm_train_node");
@@ -46,6 +61,7 @@ int main(int argc, char **argv)
 
 	ros::Subscriber sub_bbox = nh.subscribe(sub_box_topic, 10, boxCallback);
 	ros::Subscriber sub_joy = nh.subscribe("/joy", 10, joyCallback);
+	ros::Subscriber sub_img = nh.subscribe("/hk_temperature_video", 10, imageCb);
 	pub_data = nh.advertise<pdt_msgs::hk>("/hk/data",1000);
 	ros::Rate loop_rate(50);
   
@@ -113,7 +129,8 @@ BOOL CALLBACK MessageCallback(LONG lCommand, NET_DVR_ALARMER *pAlarmer, char *pA
             memcpy(&struThermometryAlarm, pAlarmInfo, sizeof(NET_DVR_THERMOMETRY_ALARM));
             if (0 == struThermometryAlarm.byRuleCalibType)
             {
-                hk_control::TemperatureInfo ti_tmp(struThermometryAlarm.wPresetNo, struThermometryAlarm.byRuleID, struThermometryAlarm.fCurrTemperature);
+                hk_control::TemperatureInfo ti_tmp(struThermometryAlarm.wPresetNo, struThermometryAlarm.byRuleID, 
+						   struThermometryAlarm.fCurrTemperature, struThermometryAlarm.byAlarmLevel);
                 my_hk_control.hk_write_temperature(ti_tmp);
             }
         }

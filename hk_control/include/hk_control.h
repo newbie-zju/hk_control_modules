@@ -11,15 +11,17 @@ public:
     int id;
     float temperature;
     int key;
+    int level;
     
     TemperatureInfo(){}
 
-    TemperatureInfo(int wPresetNo, int byRuleID, float fCurrTemperature)
+    TemperatureInfo(int wPresetNo, int byRuleID, float fCurrTemperature, int byAlarmLevel)
     {
         num = wPresetNo;
         id = byRuleID;
         temperature = fCurrTemperature;
         key = num + 100*id;
+	level = byAlarmLevel;
     }
 
 };
@@ -52,6 +54,7 @@ private:
 	void hk_control_reset();
 	void hk_control_speed(bool is_stop, int rotation_speed);
 	void hk_control_navgation();
+	void imageCb(const sensor_msgs::ImageConstPtr &msg);
 	static void CALLBACK g_ExceptionCallBack(DWORD dwType, LONG lUserID, LONG lHandle, void *pUser);
 // 	static BOOL CALLBACK MessageCallback(LONG lCommand, NET_DVR_ALARMER *pAlarmer, char *pAlarmInfo, DWORD dwBufLen, void* pUser);
 	inline void hk_clean()
@@ -81,6 +84,7 @@ public:
 	bool mannul_to_auto;
 	int temprate_detect, sleep_time, sleep_time_detect, set_nav_position_sum;
 	std::vector<TemperatureInfo> ti_vector;
+	cv::Mat src_img;
 	
 private:
 	std_msgs::Header count_time;
@@ -90,8 +94,6 @@ private:
 	HKActionEnum hk_action_state, last_hk_action_state;
 	ros::Time start_time, set_position_time;
 	int nav_position_num;
-	
-//         MainWindow* w;
 	
 };
 

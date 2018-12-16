@@ -289,49 +289,46 @@ void Hk_Control::hk_control_span(float x_differ, float y_differ,float  control_t
 
 void Hk_Control::hk_init()
 {
-//   	w = new MainWindow();
-//         w->show();
+	NET_DVR_Init();
+
+	NET_DVR_SetConnectTime(2000, 1);
+	NET_DVR_SetReconnect(10000, true);
+
+	NET_DVR_SetExceptionCallBack_V30(0, NULL,g_ExceptionCallBack, NULL);
+
+	NET_DVR_USER_LOGIN_INFO struLoginInfo = {0};
+	NET_DVR_DEVICEINFO_V40 struDeviceInfo = {0};
+	strcpy((char *)struLoginInfo.sDeviceAddress,  (char *)ip.data());
+	strcpy((char *)struLoginInfo.sUserName, (char *) username.data());
+	strcpy((char *)struLoginInfo.sPassword,  (char *)passwd.data());
+
+	struLoginInfo.wPort = 8000;
+	struLoginInfo.bUseAsynLogin = 0;
+	lUserID = NET_DVR_Login_V40(&struLoginInfo, &struDeviceInfo);
 	
-// 	NET_DVR_Init();
-// 
-// 	NET_DVR_SetConnectTime(2000, 1);
-// 	NET_DVR_SetReconnect(10000, true);
-// 
-// 	NET_DVR_SetExceptionCallBack_V30(0, NULL,g_ExceptionCallBack, NULL);
-// 
-// 	NET_DVR_USER_LOGIN_INFO struLoginInfo = {0};
-// 	NET_DVR_DEVICEINFO_V40 struDeviceInfo = {0};
-// 	strcpy((char *)struLoginInfo.sDeviceAddress,  (char *)ip.data());
-// 	strcpy((char *)struLoginInfo.sUserName, (char *) username.data());
-// 	strcpy((char *)struLoginInfo.sPassword,  (char *)passwd.data());
-// 
-// 	struLoginInfo.wPort = 8000;
-// 	struLoginInfo.bUseAsynLogin = 0;
-// 	lUserID = NET_DVR_Login_V40(&struLoginInfo, &struDeviceInfo);
-// 	
-// 	if (lUserID < 0)  throw std::string("hk state abnormal");
-// 
-// 	// turn on for setting the preset position
-// 	if (!NET_DVR_PTZPreset_Other(lUserID, 1, 8, 1))
-// 	{
-// 		printf("NET_DVR_PTZControl_Other failed, error code: %d\n", NET_DVR_GetLastError());
-// 		NET_DVR_Cleanup();
-// 		return;
-// 	}
-// 	
-// 	NET_DVR_SetDVRMessageCallBack_V31(MessageCallback, NULL);
-// 	
-// 	NET_DVR_SETUPALARM_PARAM  struAlarmParam={0};
-// 	struAlarmParam.dwSize=sizeof(struAlarmParam);
-// 
-// 	lHandle = NET_DVR_SetupAlarmChan_V41(lUserID, & struAlarmParam);
-// 	if (lHandle < 0)
-// 	{
-// 	    printf("NET_DVR_SetupAlarmChan_V41 error, %d\n", NET_DVR_GetLastError());
-// 	    NET_DVR_Logout(lUserID);
-// 	    NET_DVR_Cleanup();
-// 	    return;
-// 	}
+	if (lUserID < 0)  throw std::string("hk state abnormal");
+
+	// turn on for setting the preset position
+	if (!NET_DVR_PTZPreset_Other(lUserID, 1, 8, 1))
+	{
+		printf("NET_DVR_PTZControl_Other failed, error code: %d\n", NET_DVR_GetLastError());
+		NET_DVR_Cleanup();
+		return;
+	}
+	
+	NET_DVR_SetDVRMessageCallBack_V31(MessageCallback, NULL);
+	
+	NET_DVR_SETUPALARM_PARAM  struAlarmParam={0};
+	struAlarmParam.dwSize=sizeof(struAlarmParam);
+
+	lHandle = NET_DVR_SetupAlarmChan_V41(lUserID, & struAlarmParam);
+	if (lHandle < 0)
+	{
+	    printf("NET_DVR_SetupAlarmChan_V41 error, %d\n", NET_DVR_GetLastError());
+	    NET_DVR_Logout(lUserID);
+	    NET_DVR_Cleanup();
+	    return;
+	}
 }
 
 void Hk_Control::hk_write_temperature(TemperatureInfo ti)
@@ -368,26 +365,34 @@ void Hk_Control::hk_write_temperature(TemperatureInfo ti)
 	printf("record the temerature\n");
         std::cout<<"time:" << getTime() << ", " <<"Preset positions:" << ti.num << ", " << "ID:"<< ti.id << ", " << "temperature:"<< ti.temperature << std::endl;
 
+	if (ti.level == 1) 
+	{
+            if (src_img.type() != 0) 
+	    {
+	        cv::Mat src_org;
+                std::string image_output_file = output_file;
+                image_output_file = image_output_file.replace(image_output_file.find(".txt"), 4, + " time:"+
+                                                              getTime() + " num:" + std::to_string(ti.num) + " id:" +
+                                                              std::to_string(ti.id) + " t:" + std::to_string(ti.temperature) +
+                                                              " l:" + std::to_string(ti.level) + ".jpg");
+                std::cout << image_output_file << std::endl;
+                cv::imwrite(image_output_file, src_img);
+                src_img = src_org;//clean
+            } 
+            else 
+	    {
+                std::cout << "未收到红外线图像" << std::endl;
+            }
+
+        }
+
 	pdt_msgs::hk hk_data;
 	hk_data.data_time = getTime();
 	hk_data.pre_position = std::to_string(ti.num);
 	hk_data.ID = std::to_string(ti.id);
 	hk_data.temperature = std::to_string(ti.temperature);
 	pub_data.publish(hk_data);
-// 	if (ti.temperature > temperature_warning)
-// 	{
-// 	    cv::Mat image = cv::imread(img_path);
-// 	    cv::imshow("Warning", image);
-// 	    cv::waitKey(1);
-// 	    img_show = true;
-// 	}
-// 	
-// 	if (img_show && cv::waitKey(10) == 27)
-// 	{
-// 	    cv::destroyWindow("Warning");
-// 	    img_show = false;
-// 	}
-// 	
+	
         ti_vector.push_back(ti);
 }
 

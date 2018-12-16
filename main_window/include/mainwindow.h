@@ -17,7 +17,7 @@
 #include <opencv2/highgui/highgui.hpp>
 #include <ros/package.h>
 
-#define warning_threshold 30
+#define warning_threshold 20
 
 namespace Ui {
 class MainWindow;
@@ -33,8 +33,8 @@ public:
 
 private slots:
     void on_pushButton_clicked();
-    void slot_img(const sensor_msgs::ImageConstPtr &img_msg);
-    void slot_data(const pdt_msgs::hkConstPtr &hk_msg);
+    void slot_img(const ImageMsgVal &img_msg);
+    void slot_data(const RecfgMsgVal &hk_msg);
 
 private:
     Ui::MainWindow *ui;

@@ -24,9 +24,14 @@
 	  <param name="sleep_time_detect" type="int" value="20" />
 	  <param name="set_nav_position_sum" type="int" value="4" />
 	  
-	  <param name="img_path" type="string" value="/config/warning.jpg" />
-	  
-  </node>
+	  <param name="img_path" type="string" value="/config/warning.jpg" />  
+    </node>
+    
     <node pkg="joy" type="joy_node" name="joy_node">
-  </node>
+    </node>
+    
+    <node pkg="main_window" type="main_window_node" name="main_window_node">
+    </node>
+  
+  <include file="$(find hk_temperature_video_publisher)/launch/hk_temperature_video_publisher.launch"/>
 </launch>
