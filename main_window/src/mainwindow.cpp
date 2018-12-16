@@ -27,6 +27,7 @@ MainWindow::MainWindow(int argc, char **argv, QWidget *parent) :
     ui->label_12->setStyleSheet("border-width: 1px;border-style: solid;border-color: rgb(0, 0, 0);");
 
     connect(ui->pushButton, SIGNAL(clicked()), this, SLOT(on_pushButton_clicked()));
+    connect(ui->pushButton_2, SIGNAL(clicked()), this, SLOT(on_pushButton2_clicked()));
     ui->label_7->setText(QString::fromStdString("-1"));
     ui->label_8->setText(QString::fromStdString("-1"));
     ui->label_9->setText(QString::fromStdString("-1"));
@@ -54,23 +55,25 @@ void MainWindow::on_pushButton_clicked()
     close();
 }
 
-void MainWindow::on_pushButton1_clicked()
+void MainWindow::on_pushButton2_clicked()
 {
-    close();
+    QString mString = ui->lineEdit->text();
+    warning_threshold = mString.toFloat();
+//     std::cout << "warning" << warning_threshold << std::endl;
 }
 
 void MainWindow::slot_img(const ImageMsgVal &img_msg)
 {
-      cv::Mat showImg;
-//       std::cout << "fuck1" << std::endl;
-      cv_bridge::CvImageConstPtr ptr;
-      ptr = cv_bridge::toCvCopy(img_msg, sensor_msgs::image_encodings::BGR8);
-      src_img = ptr->image.clone();
-      showImg = src_img.clone();
-      cv::resize(showImg, showImg, cv::Size(640, 360));
-      cv::cvtColor(showImg, showImg, CV_BGR2RGB);
-      m_qImg = QImage((const unsigned char*)(showImg.data), showImg.cols, showImg.rows, QImage::Format_RGB888);
-      ui->label_12->setPixmap(QPixmap::fromImage(m_qImg));
+    cv::Mat showImg;
+    //       std::cout << "fuck1" << std::endl;
+    cv_bridge::CvImageConstPtr ptr;
+    ptr = cv_bridge::toCvCopy(img_msg, sensor_msgs::image_encodings::BGR8);
+    src_img = ptr->image.clone();
+    showImg = src_img.clone();
+    cv::resize(showImg, showImg, cv::Size(640, 360));
+    cv::cvtColor(showImg, showImg, CV_BGR2RGB);
+    m_qImg = QImage((const unsigned char*)(showImg.data), showImg.cols, showImg.rows, QImage::Format_RGB888);
+    ui->label_12->setPixmap(QPixmap::fromImage(m_qImg));
 }
 
 void MainWindow::slot_data(const RecfgMsgVal &hk_msg)
@@ -83,6 +86,11 @@ void MainWindow::slot_data(const RecfgMsgVal &hk_msg)
       std::istringstream is(hk_msg->temperature);
       is >> temper_tmp;
 
+      if (warning_threshold == 0)
+      {
+	  printf("warning_threshold is 0, set it to Windows default\n");
+	  warning_threshold = 20;
+      }
       if (temper_tmp < warning_threshold)
       {
           warning_img = cv::imread(normal_path);

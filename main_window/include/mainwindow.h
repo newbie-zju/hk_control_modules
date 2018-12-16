@@ -31,7 +31,7 @@ public:
 
 private slots:
     void on_pushButton_clicked();
-    void on_pushButton1_clicked();
+    void on_pushButton2_clicked();
     void slot_img(const ImageMsgVal &img_msg);
     void slot_data(const RecfgMsgVal &hk_msg);
 
