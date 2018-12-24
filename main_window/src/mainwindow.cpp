@@ -145,6 +145,7 @@ void MainWindow::loadParams()
     if(!fsSettings.isOpened())
     {
         std::cerr << "ERROR: Wrong path to settings" << std::endl;
+	exit(1);
     }
     
     preset_position_num = fsSettings["preset_position_num"];
