@@ -108,7 +108,7 @@ void get_ros_param(ros::NodeHandle &nh_param)
 	if(!nh_param.getParam("set_nav_position_sum", set_nav_position_sum)) set_nav_position_sum = 10;
 	
 	std::string pkg_path = ros::package::getPath("hk_control");
-	output_file = pkg_path + output_file;
+	//output_file = pkg_path + output_file;
 	img_path = pkg_path + img_path;
 	my_hk_control.output_file = output_file;
 	my_hk_control.img_path = img_path;
