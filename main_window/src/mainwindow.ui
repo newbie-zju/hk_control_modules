@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1336</width>
-    <height>853</height>
+    <height>842</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -128,9 +128,9 @@
    <widget class="QFrame" name="frame_3">
     <property name="geometry">
      <rect>
-      <x>230</x>
+      <x>300</x>
       <y>450</y>
-      <width>851</width>
+      <width>711</width>
       <height>51</height>
      </rect>
     </property>
@@ -145,7 +145,7 @@
       <rect>
        <x>109</x>
        <y>10</y>
-       <width>721</width>
+       <width>581</width>
        <height>31</height>
       </rect>
      </property>
@@ -186,6 +186,12 @@
        </disabled>
       </palette>
      </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+       <italic>true</italic>
+      </font>
+     </property>
      <property name="text">
       <string/>
      </property>
@@ -206,7 +212,7 @@
       </size>
      </property>
      <property name="text">
-      <string notr="true">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt;&quot;&gt;时    间：&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string notr="true">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:18pt;&quot;&gt;时 间：&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="textFormat">
       <enum>Qt::RichText</enum>
@@ -222,9 +228,9 @@
    <widget class="QFrame" name="frame_5">
     <property name="geometry">
      <rect>
-      <x>230</x>
+      <x>300</x>
       <y>500</y>
-      <width>851</width>
+      <width>711</width>
       <height>51</height>
      </rect>
     </property>
@@ -239,9 +245,15 @@
       <rect>
        <x>109</x>
        <y>10</y>
-       <width>721</width>
+       <width>581</width>
        <height>31</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+       <italic>true</italic>
+      </font>
      </property>
      <property name="text">
       <string/>
@@ -264,9 +276,9 @@
    <widget class="QFrame" name="frame_6">
     <property name="geometry">
      <rect>
-      <x>230</x>
+      <x>300</x>
       <y>550</y>
-      <width>851</width>
+      <width>711</width>
       <height>51</height>
      </rect>
     </property>
@@ -281,9 +293,15 @@
       <rect>
        <x>109</x>
        <y>10</y>
-       <width>721</width>
+       <width>581</width>
        <height>31</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+       <italic>true</italic>
+      </font>
      </property>
      <property name="text">
       <string/>
@@ -306,9 +324,9 @@
    <widget class="QFrame" name="frame_7">
     <property name="geometry">
      <rect>
-      <x>230</x>
-      <y>600</y>
-      <width>851</width>
+      <x>300</x>
+      <y>650</y>
+      <width>711</width>
       <height>51</height>
      </rect>
     </property>
@@ -336,9 +354,15 @@
       <rect>
        <x>109</x>
        <y>10</y>
-       <width>721</width>
+       <width>581</width>
        <height>31</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+       <italic>true</italic>
+      </font>
      </property>
      <property name="text">
       <string/>
@@ -348,9 +372,9 @@
    <widget class="QFrame" name="frame_4">
     <property name="geometry">
      <rect>
-      <x>230</x>
-      <y>650</y>
-      <width>851</width>
+      <x>300</x>
+      <y>700</y>
+      <width>711</width>
       <height>51</height>
      </rect>
     </property>
@@ -386,7 +410,7 @@
     <widget class="QPushButton" name="pushButton_2">
      <property name="geometry">
       <rect>
-       <x>740</x>
+       <x>600</x>
        <y>10</y>
        <width>85</width>
        <height>31</height>
@@ -397,16 +421,60 @@
      </property>
     </widget>
    </widget>
-   <zorder>pushButton</zorder>
-   <zorder>frame</zorder>
-   <zorder>frame_2</zorder>
-   <zorder>label_5</zorder>
-   <zorder>label_12</zorder>
-   <zorder>frame_3</zorder>
-   <zorder>frame_5</zorder>
-   <zorder>frame_6</zorder>
-   <zorder>frame_7</zorder>
-   <zorder>frame_4</zorder>
+   <widget class="QFrame" name="frame_8">
+    <property name="geometry">
+     <rect>
+      <x>300</x>
+      <y>600</y>
+      <width>711</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QLabel" name="label_15">
+     <property name="geometry">
+      <rect>
+       <x>111</x>
+       <y>8</y>
+       <width>581</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+       <italic>true</italic>
+      </font>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_14">
+     <property name="geometry">
+      <rect>
+       <x>9</x>
+       <y>8</y>
+       <width>71</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>18</pointsize>
+       <italic>false</italic>
+      </font>
+     </property>
+     <property name="text">
+      <string>位 置：</string>
+     </property>
+    </widget>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">

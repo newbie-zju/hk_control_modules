@@ -1,0 +1,9 @@
+%YAML:1.0
+
+#common parameters
+preset_position_num: 3
+ID_num: 1
+2_1: "csc A相"
+3_1: "csc B相"
+4_1: "csc C相"
+

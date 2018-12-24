@@ -11,7 +11,7 @@
 #include "rosthread.h"
 #include <ros/ros.h>
 #include <cv_bridge/cv_bridge.h>
-#include "opencv2/opencv.hpp"
+#include <opencv2/opencv.hpp>
 #include <opencv2/core/core.hpp>
 #include <opencv2/imgproc/imgproc.hpp>
 #include <opencv2/highgui/highgui.hpp>
@@ -28,6 +28,9 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(int argc, char **argv, QWidget *parent = 0);
     ~MainWindow();
+    
+private:
+    void loadParams();
 
 private slots:
     void on_pushButton_clicked();
@@ -42,4 +45,6 @@ private:
     cv::Mat warning_img, src_img;
     std::string normal_path, abnormal_path;
     float warning_threshold;
+    std::vector<std::string> show_position;
+    int preset_position_num, ID_num;
 };
