@@ -1,7 +1,6 @@
 %YAML:1.0
 
 #common parameters
-<<<<<<< HEAD
 preset_position_sum: 6
 ID_sum: 9
 1_1: "110KV 桥开关流变C相母线侧"
@@ -63,11 +62,3 @@ ID_sum: 9
 6_7: "-1"
 6_8: "-1"
 6_9: "-1"
-=======
-preset_position_num: 3
-ID_num: 1
-2_1: "csc A相"
-3_1: "csc B相"
-4_1: "csc C相"
-
->>>>>>> e78648da6ae4f52fc42ef6098b02397a1799a056

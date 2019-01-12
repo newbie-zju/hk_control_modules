@@ -30,7 +30,6 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(int argc, char **argv, QWidget *parent = 0);
     ~MainWindow();
-<<<<<<< HEAD
    
     
 private:
@@ -54,7 +53,6 @@ private:
     std::string pkg_path;
     float warning_threshold;
     std::vector<std::string> show_position;
-
     int preset_position_sum, ID_sum;
     std::vector<std::string> show_position_data_vec;
     int first_position_num, save_img_count;
