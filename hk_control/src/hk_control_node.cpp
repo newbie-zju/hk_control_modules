@@ -56,9 +56,9 @@ int main(int argc, char **argv)
 	ros::init(argc, argv, "svm_train_node");
 	ros::NodeHandle nh;
 	ros::NodeHandle nh_param("~");
-
+    //my_hk_control.m_nh = nh;
 	get_ros_param(nh_param);
-
+    my_hk_control.hk_init(nh);
 	ros::Subscriber sub_bbox = nh.subscribe(sub_box_topic, 10, boxCallback);
 	ros::Subscriber sub_joy = nh.subscribe("/joy", 10, joyCallback);
 	ros::Subscriber sub_img = nh.subscribe("/hk_temperature_video", 10, imageCb);
@@ -116,7 +116,6 @@ void get_ros_param(ros::NodeHandle &nh_param)
 	my_hk_control.sleep_time = sleep_time;
 	my_hk_control.sleep_time_detect = sleep_time_detect;
 	my_hk_control.set_nav_position_sum = set_nav_position_sum;
-	my_hk_control.hk_init();
 }
 
 BOOL CALLBACK MessageCallback(LONG lCommand, NET_DVR_ALARMER *pAlarmer, char *pAlarmInfo, DWORD dwBufLen, void* pUser)

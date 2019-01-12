@@ -17,6 +17,7 @@
 #include <ros/package.h>
 #include "pdt_msgs/BoundingBox.h"
 #include "pdt_msgs/hk.h"
+#include <std_msgs/Bool.h>
 
 /**************************************/
 /*            hk head file          */

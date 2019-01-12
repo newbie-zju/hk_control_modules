@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<launch>
+    <node pkg="hk_control" name="hk_control" type="hk_control_node" output="screen">
+	  <!-- mode-->
+	  <param name="sub_box_topic" type="string" value="/track_box" />
+	  
+	  <!--hk-->
+	  <param name="ip" type="string" value="192.168.0.200" />
+	  <param name="username" type="string" value="admin" />
+	  <param name="passwd" type="string" value="zjucsc301" />
+	  
+	  <!-- PID-->
+	  <param name="P" type="double" value="1.4"/>
+	  <param name="I" type="double" value="0"/>
+	  <param name="D" type="double" value="0"/>
+	  
+	  <param name="keep_static_threshold" type="double" value="0.08"/>
+	  <param name="joy_sensitivity" type="double" value="0.2"/>
+	  
+	  <param name="time_threshold" type="double" value="10"/>
+	  <param name="output_file" type="string" value="/config/logs/result.txt" />
+	  <param name="temprate_detect" type="int" value="1" />
+	  <param name="sleep_time" type="int" value="10" />
+	  <param name="sleep_time_detect" type="int" value="20" />
+	  <param name="set_nav_position_sum" type="int" value="4" />
+	  
+	  <param name="img_path" type="string" value="/config/warning.jpg" />  
+    </node>
+    
+    <node pkg="joy" type="joy_node" name="joy_node">
+    </node>
+</launch>

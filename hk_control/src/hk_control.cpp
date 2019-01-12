@@ -173,7 +173,8 @@ void Hk_Control::hk_control_manual()
 
 void Hk_Control::hk_control_navgation()
 {
-    
+    std_msgs::Bool change_mode_msgs;
+	change_mode_msgs.data = false;
     if (set_nav_position_sum == 0 && !warn_show)
     {
 	printf("set the nav position first\n");
@@ -181,21 +182,35 @@ void Hk_Control::hk_control_navgation()
 	return;
     }
     hk_clean();
-    for (size_t i = 2; i <= set_nav_position_sum; i++)
+    for (size_t i = 1; i <= set_nav_position_sum; i++)
     {
 //         hk_clean();
-	if (!NET_DVR_PTZPreset_Other(lUserID, 1, 39, i))
-	{
-	    printf("NET_DVR_PTZControl_Other failed, error code: %d\n", NET_DVR_GetLastError());
-	    NET_DVR_Cleanup();
-	    return;
-	}
-	printf("back to set position: %d\n", i);
-	sleep(sleep_time);
+		if (i == 6)
+		{
+			change_mode_msgs.data = true;
+		}
+		
+		if (!NET_DVR_PTZPreset_Other(lUserID, 1, 39, i))
+		{
+			printf("NET_DVR_PTZControl_Other failed, error code: %d\n", NET_DVR_GetLastError());
+			NET_DVR_Cleanup();
+			return;
+		}
+		sleep(3);
+		m_pubstate.publish(change_mode_msgs);
+		if (!ros::ok()) 
+		{
+			printf("quit for navigation\n");
+			break;
+		}
+		printf("back to set position: %d\n", i);
+		if (i != 6)  sleep(sleep_time);
     }
     printf("\n");
     sleep(sleep_time_detect);
-	
+
+    change_mode_msgs.data = false;
+    m_pubstate.publish(change_mode_msgs);
 	
 }
 
@@ -287,8 +302,10 @@ void Hk_Control::hk_control_span(float x_differ, float y_differ,float  control_t
 }
 
 
-void Hk_Control::hk_init()
+void Hk_Control::hk_init(ros::NodeHandle &m_nh)
 {
+	loadParams();
+	m_pubstate = m_nh.advertise<std_msgs::Bool>("/hk_mode", 10);
 	NET_DVR_Init();
 
 	NET_DVR_SetConnectTime(2000, 1);
@@ -308,14 +325,6 @@ void Hk_Control::hk_init()
 	
 	if (lUserID < 0)  throw std::string("hk state abnormal");
 
-	// turn on for setting the preset position
-	if (!NET_DVR_PTZPreset_Other(lUserID, 1, 8, 1))
-	{
-		printf("NET_DVR_PTZControl_Other failed, error code: %d\n", NET_DVR_GetLastError());
-		NET_DVR_Cleanup();
-		return;
-	}
-	
 	NET_DVR_SetDVRMessageCallBack_V31(MessageCallback, NULL);
 	
 	NET_DVR_SETUPALARM_PARAM  struAlarmParam={0};
@@ -329,6 +338,16 @@ void Hk_Control::hk_init()
 	    NET_DVR_Cleanup();
 	    return;
 	}
+
+	// turn on for setting the preset position　６
+	if (!NET_DVR_PTZPreset_Other(lUserID, 1, 39, 6))
+	{
+		printf("NET_DVR_PTZControl_Other failed, error code: %d\n", NET_DVR_GetLastError());
+		NET_DVR_Cleanup();
+		return;
+	}
+	sleep(10);
+	
 }
 
 void Hk_Control::hk_write_temperature(TemperatureInfo ti)
@@ -358,12 +377,23 @@ void Hk_Control::hk_write_temperature(TemperatureInfo ti)
                 ifile.close();
             }
         }
-
+        std::string position_name_str;
+        int position_name_str_index;
+        position_name_str_index = ID_sum*(ti.num - 1) + ti.id - 1;
+        if (position_name_str_index > show_position.size())
+        {
+            printf("error ID and pre_position\n");
+	        position_name_str = "error ID and pre_position";
+        }
+         else
+        {
+            position_name_str = show_position[position_name_str_index];
+        }
         std::ofstream ofile;
         ofile.open(output_file, std::ios::app);
-        ofile<<"time:" << getTime() << ", " <<"Preset positions:" << ti.num << ", " << "ID:"<< ti.id << ", " << "temperature:"<< ti.temperature << std::endl;
-	printf("record the temerature\n");
-        std::cout<<"time:" << getTime() << ", " <<"Preset positions:" << ti.num << ", " << "ID:"<< ti.id << ", " << "temperature:"<< ti.temperature << std::endl;
+        ofile<<"时间:" << getTime() << ", " <<"预置点:" << ti.num << ", " << "ID:"<< ti.id << ", " << "位置: " << position_name_str << ", " << "温度:"<< ti.temperature << std::endl;
+	    printf("record the temerature\n");
+        std::cout<<"时间:" << getTime() << ", " <<"预置点:" << ti.num << ", " << "ID:"<< ti.id << ", " << "温度:"<< ti.temperature << std::endl;
 
 	if (ti.level == 1) 
 	{
@@ -393,7 +423,7 @@ void Hk_Control::hk_write_temperature(TemperatureInfo ti)
 	hk_data.temperature = std::to_string(ti.temperature);
 	pub_data.publish(hk_data);
 	
-        ti_vector.push_back(ti);
+    ti_vector.push_back(ti);
 }
 
 void CALLBACK Hk_Control::g_ExceptionCallBack(DWORD dwType, LONG lUserID, LONG lHandle, void *pUser)
@@ -407,6 +437,44 @@ void CALLBACK Hk_Control::g_ExceptionCallBack(DWORD dwType, LONG lUserID, LONG l
 		default:
 			break;
 	}
+}
+
+void Hk_Control::loadParams()
+{
+    std::string config_file;
+    std::string pkg_path = ros::package::getPath("main_window");
+    config_file = pkg_path + "/config/position.yaml";
+    printf("param's file path: %c\n", config_file.c_str());
+    
+    cv::FileStorage fsSettings(config_file, cv::FileStorage::READ);
+    if(!fsSettings.isOpened())
+    {
+        std::cerr << "ERROR: Wrong path to settings" << std::endl;
+	exit(1);
+    }
+    
+    preset_position_sum = fsSettings["preset_position_sum"];
+    ID_sum = fsSettings["ID_sum"];
+    
+    if (preset_position_sum == 0 || ID_sum == 0)
+    {
+        printf("error position num\n");
+	exit(1);
+    }
+    
+    for (size_t i = 0; i < preset_position_sum; i++)
+    {
+        for (size_t j = 0; j < ID_sum; j++)
+	{
+	    std::string position_str_tmp, list_name_str;
+	    list_name_str = std::to_string(i+1) + "_" + std::to_string(j+1);
+	    fsSettings[list_name_str] >> position_str_tmp;
+	    show_position.push_back(position_str_tmp);
+	}
+    }
+    
+    fsSettings.release();
+
 }
 
 }

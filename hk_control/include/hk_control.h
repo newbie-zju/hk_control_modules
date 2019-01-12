@@ -33,7 +33,7 @@ public:
 	Hk_Control();
 	~Hk_Control();
 	
-	void hk_init();
+	void hk_init(ros::NodeHandle &m_nh);
 	void hk_control_process(float target_center_x, float target_center_y, std_msgs::Header detect_head);
 	void hk_control_manual();
 	void hk_control_auto();
@@ -52,6 +52,7 @@ private:
 	void hk_control_span(float x_differ, float y_differ,float  control_threshold);
 // 	void hk_control_auto(float target_center_x, float target_center_y, std_msgs::Header detect_head);
 	void hk_control_reset();
+	void loadParams();
 	void hk_control_speed(bool is_stop, int rotation_speed);
 	void hk_control_navgation();
 	void imageCb(const sensor_msgs::ImageConstPtr &msg);
@@ -94,7 +95,9 @@ private:
 	HKActionEnum hk_action_state, last_hk_action_state;
 	ros::Time start_time, set_position_time;
 	int nav_position_num;
-	
+	int preset_position_sum, ID_sum;
+	std::vector<std::string> show_position;
+	ros::Publisher m_pubstate;
 };
 
 }

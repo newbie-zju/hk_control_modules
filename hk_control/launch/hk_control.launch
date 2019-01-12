@@ -21,18 +21,17 @@
 	  <param name="output_file" type="string" value="/config/logs/result.txt" />
 	  <param name="temprate_detect" type="int" value="1" />
 	  <param name="sleep_time" type="int" value="10" />
-	  <param name="sleep_time_detect" type="int" value="20" />
-	  <param name="set_nav_position_sum" type="int" value="4" />
+	  <param name="sleep_time_detect" type="int" value="25" />
+	  <param name="set_nav_position_sum" type="int" value="6" />
 	  
 	  <param name="img_path" type="string" value="/config/warning.jpg" />  
 	  <param name="output_file" type="string" value="/home/gjdw/Desktop/wl/result.txt" />  
 
     </node>
-    
-    <node pkg="joy" type="joy_node" name="joy_node">
+	    <node pkg="joy" type="joy_node" name="joy_node">
     </node>
     
-    <node pkg="main_window" type="main_window_node" name="main_window_node">
+    <node pkg="main_window" type="main_window_node" name="main_window_node" output="screen">
     </node>
   
   <include file="$(find hk_temperature_video_publisher)/launch/hk_temperature_video_publisher.launch"/>

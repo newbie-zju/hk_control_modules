@@ -28,6 +28,7 @@ void RosThread::rosrunThread()
 {
     ros::Subscriber sub_data =  n_->subscribe("/hk/data", 10, &RosThread::dataCallback, this);
     ros::Subscriber sub_img =  n_->subscribe("/hk_temperature_video", 10, &RosThread::imgCallback, this);
+   // m_pubstate = n_->advertise<std_msgs::Bool>("/hk_run_mode", 10);
     ros::Duration initDur(0.2);
     
     while (ros::ok() && !m_isExt)

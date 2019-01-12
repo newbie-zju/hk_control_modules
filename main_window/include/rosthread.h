@@ -12,6 +12,7 @@
 #include <dynamic_reconfigure/Config.h>
 #include <../../devel/include/pdt_msgs/hk.h>
 #include <pdt_msgs/hk.h>
+#include <std_msgs/Bool.h>
 
 typedef pdt_msgs::hk::ConstPtr RecfgMsgVal;
 typedef sensor_msgs::Image::ConstPtr ImageMsgVal;
@@ -26,6 +27,7 @@ public:
     void setServicesName(std::string srvname);
     void shutServicesUpdate(std::string srvname);
     cv::Mat src_img;
+    ros::Publisher m_pubstate;
 
 signals:
     void signal_img_msg(const ImageMsgVal &img_msg);
