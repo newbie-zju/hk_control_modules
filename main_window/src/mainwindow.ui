@@ -7,7 +7,11 @@
     <x>0</x>
     <y>0</y>
     <width>1336</width>
+<<<<<<< HEAD
     <height>989</height>
+=======
+    <height>842</height>
+>>>>>>> e78648da6ae4f52fc42ef6098b02397a1799a056
    </rect>
   </property>
   <property name="windowTitle">
@@ -128,9 +132,15 @@
    <widget class="QFrame" name="frame_3">
     <property name="geometry">
      <rect>
+<<<<<<< HEAD
       <x>10</x>
       <y>450</y>
       <width>451</width>
+=======
+      <x>300</x>
+      <y>450</y>
+      <width>711</width>
+>>>>>>> e78648da6ae4f52fc42ef6098b02397a1799a056
       <height>51</height>
      </rect>
     </property>
@@ -145,7 +155,11 @@
       <rect>
        <x>120</x>
        <y>10</y>
+<<<<<<< HEAD
        <width>231</width>
+=======
+       <width>581</width>
+>>>>>>> e78648da6ae4f52fc42ef6098b02397a1799a056
        <height>31</height>
       </rect>
      </property>
@@ -228,10 +242,17 @@
    <widget class="QFrame" name="frame_5">
     <property name="geometry">
      <rect>
+<<<<<<< HEAD
       <x>550</x>
       <y>490</y>
       <width>771</width>
       <height>361</height>
+=======
+      <x>300</x>
+      <y>500</y>
+      <width>711</width>
+      <height>51</height>
+>>>>>>> e78648da6ae4f52fc42ef6098b02397a1799a056
      </rect>
     </property>
     <property name="frameShape">
@@ -243,6 +264,7 @@
     <widget class="QFrame" name="frame_7">
      <property name="geometry">
       <rect>
+<<<<<<< HEAD
        <x>0</x>
        <y>0</y>
        <width>921</width>
@@ -254,6 +276,22 @@
      </property>
      <property name="frameShadow">
       <enum>QFrame::Raised</enum>
+=======
+       <x>109</x>
+       <y>10</y>
+       <width>581</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+       <italic>true</italic>
+      </font>
+     </property>
+     <property name="text">
+      <string/>
+>>>>>>> e78648da6ae4f52fc42ef6098b02397a1799a056
      </property>
      <widget class="QLabel" name="label_15">
       <property name="geometry">
@@ -381,6 +419,7 @@
      <zorder>label_38</zorder>
      <zorder>frame_9</zorder>
     </widget>
+<<<<<<< HEAD
     <widget class="QFrame" name="frame_10">
      <property name="geometry">
       <rect>
@@ -392,6 +431,41 @@
      </property>
      <property name="frameShape">
       <enum>QFrame::StyledPanel</enum>
+=======
+   </widget>
+   <widget class="QFrame" name="frame_6">
+    <property name="geometry">
+     <rect>
+      <x>300</x>
+      <y>550</y>
+      <width>711</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QLabel" name="label_9">
+     <property name="geometry">
+      <rect>
+       <x>109</x>
+       <y>10</y>
+       <width>581</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+       <italic>true</italic>
+      </font>
+     </property>
+     <property name="text">
+      <string/>
+>>>>>>> e78648da6ae4f52fc42ef6098b02397a1799a056
      </property>
      <property name="frameShadow">
       <enum>QFrame::Raised</enum>
@@ -871,9 +945,15 @@
    <widget class="QFrame" name="frame_4">
     <property name="geometry">
      <rect>
+<<<<<<< HEAD
       <x>10</x>
       <y>790</y>
       <width>451</width>
+=======
+      <x>300</x>
+      <y>650</y>
+      <width>711</width>
+>>>>>>> e78648da6ae4f52fc42ef6098b02397a1799a056
       <height>51</height>
      </rect>
     </property>
@@ -911,9 +991,19 @@
       <rect>
        <x>340</x>
        <y>10</y>
+<<<<<<< HEAD
        <width>85</width>
+=======
+       <width>581</width>
+>>>>>>> e78648da6ae4f52fc42ef6098b02397a1799a056
        <height>31</height>
       </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+       <italic>true</italic>
+      </font>
      </property>
      <property name="text">
       <string>输入</string>
@@ -923,10 +1013,17 @@
    <widget class="QFrame" name="frame_6">
     <property name="geometry">
      <rect>
+<<<<<<< HEAD
       <x>550</x>
       <y>430</y>
       <width>771</width>
       <height>61</height>
+=======
+      <x>300</x>
+      <y>700</y>
+      <width>711</width>
+      <height>51</height>
+>>>>>>> e78648da6ae4f52fc42ef6098b02397a1799a056
      </rect>
     </property>
     <property name="frameShape">
@@ -970,7 +1067,11 @@
     <widget class="QLabel" name="label_3">
      <property name="geometry">
       <rect>
+<<<<<<< HEAD
        <x>120</x>
+=======
+       <x>600</x>
+>>>>>>> e78648da6ae4f52fc42ef6098b02397a1799a056
        <y>10</y>
        <width>31</width>
        <height>41</height>
@@ -994,6 +1095,7 @@
      </property>
     </widget>
    </widget>
+<<<<<<< HEAD
    <zorder>pushButton</zorder>
    <zorder>frame</zorder>
    <zorder>frame_2</zorder>
@@ -1003,6 +1105,62 @@
    <zorder>frame_6</zorder>
    <zorder>pushButton_2</zorder>
    <zorder>label_37</zorder>
+=======
+   <widget class="QFrame" name="frame_8">
+    <property name="geometry">
+     <rect>
+      <x>300</x>
+      <y>600</y>
+      <width>711</width>
+      <height>51</height>
+     </rect>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QLabel" name="label_15">
+     <property name="geometry">
+      <rect>
+       <x>111</x>
+       <y>8</y>
+       <width>581</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>14</pointsize>
+       <italic>true</italic>
+      </font>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
+    <widget class="QLabel" name="label_14">
+     <property name="geometry">
+      <rect>
+       <x>9</x>
+       <y>8</y>
+       <width>71</width>
+       <height>31</height>
+      </rect>
+     </property>
+     <property name="font">
+      <font>
+       <pointsize>18</pointsize>
+       <italic>false</italic>
+      </font>
+     </property>
+     <property name="text">
+      <string>位 置：</string>
+     </property>
+    </widget>
+   </widget>
+>>>>>>> e78648da6ae4f52fc42ef6098b02397a1799a056
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
